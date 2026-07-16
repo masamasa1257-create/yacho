@@ -1,7 +1,7 @@
 "use strict";
 // 野帳 オフラインキャッシュ
 // 一度開いたページを端末に保存し、次回からは通信なしで即座に表示します。
-const CACHE = "yacho-v5";
+const CACHE = "yacho-v6";
 const ASSETS = ["./", "./index.html"];
 
 self.addEventListener("install", e => {

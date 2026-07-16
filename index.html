@@ -57,7 +57,16 @@
   .g3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px;}
   .reading{border:1.5px dashed var(--grid); border-radius:10px; padding:11px; margin-top:10px; background:#F8FAF6;}
   .reading:first-of-type{margin-top:0;}
-  .rgrid{display:grid; grid-template-columns:.8fr 1fr 1fr 30px; gap:8px; align-items:end;}
+  .rgrid{display:grid; gap:8px; align-items:end;
+    grid-template-areas:"pos fs design x";
+    grid-template-columns:.8fr 1fr 1fr 30px;}
+  .c-pos{grid-area:pos;} .c-fs{grid-area:fs;} .c-design{grid-area:design;} .c-x{grid-area:x;}
+  @media (max-width:540px){
+    .rgrid{grid-template-areas:"pos fs x" "design design design";
+      grid-template-columns:.9fr 1.3fr 34px;}
+    .g3{grid-template-columns:1fr 1fr;}
+    .g3 > div:last-child{grid-column:1 / -1;}
+  }
 
   /* 計算結果:黒帯に大きく表示 */
   .result{margin-top:10px; background:var(--strip); border-radius:8px;
@@ -100,10 +109,6 @@
   .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:#fff;
     padding:12px 20px; border-radius:999px; font-size:15px; font-weight:700; opacity:0; transition:opacity .25s; pointer-events:none; z-index:9;}
   .toast.show{opacity:1;}
-  @media (max-width:420px){
-    .g3{grid-template-columns:1fr 1fr; }
-    .g3 > div:last-child{grid-column:1 / -1;}
-  }
 </style>
 </head>
 <body>
@@ -315,12 +320,12 @@ function buildRows(){
         inner +=
         '<div class="reading">'+
           '<div class="rgrid">'+
-            '<div><label class="lbl">位置</label><input class="jp" value="'+esc(m.label)+'" placeholder="'+ph+'" data-f="label" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
-            '<div><label class="lbl">前視 FS (m)</label><input inputmode="decimal" value="'+esc(m.fs)+'" placeholder="0.985" data-f="fs" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
-            '<div><label class="lbl">設計高 (m・任意)</label><input inputmode="decimal" value="'+esc(m.design)+'" placeholder="245.100" data-f="design" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
+            '<div class="c-pos"><label class="lbl">位置</label><input class="jp" value="'+esc(m.label)+'" placeholder="'+ph+'" data-f="label" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
+            '<div class="c-fs"><label class="lbl">前視 FS (m)</label><input inputmode="decimal" value="'+esc(m.fs)+'" placeholder="0.985" data-f="fs" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
+            '<div class="c-design"><label class="lbl">設計高 (m・任意)</label><input inputmode="decimal" value="'+esc(m.design)+'" placeholder="245.100" data-f="design" data-row="'+r.id+'" data-read="'+m.id+'"></div>'+
             (r.readings.length>1
-              ? '<button class="xbtn" onclick="removeReading('+r.id+','+m.id+')">×</button>'
-              : '<span></span>')+
+              ? '<button class="xbtn c-x" onclick="removeReading('+r.id+','+m.id+')">×</button>'
+              : '<span class="c-x"></span>')+
           '</div>'+
           '<div class="result">'+
             '<div class="rcell"><span class="rkey">地盤高 GH</span><span class="mono rval" data-gh="'+m.id+'">—</span></div>'+
